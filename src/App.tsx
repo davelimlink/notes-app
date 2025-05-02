@@ -4,6 +4,7 @@ import { Container } from "react-bootstrap"; // Assuming Container is from react
 import NewNote from "./NewNote";
 import { useLocalStorage } from "./useLocalStorage";
 import NoteList from "./NoteList";
+import NoteLayout from "./NoteLayout";
 
 export type Tag = {
   id: string;
@@ -82,7 +83,7 @@ function App() {
               />
             }
           />
-          <Route path="/:id">
+          <Route path="/:id" element={<NoteLayout notes={notesWithTaggs} />}>
             <Route index element={<h1>How</h1>} />
             <Route path="edit" element={<h1>Edit</h1>} />
             <Route />
