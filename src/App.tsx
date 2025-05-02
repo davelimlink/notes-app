@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Container } from "react-bootstrap"; // Assuming Container is from react-bootstrap
 import NewNote from "./NewNote";
 import { useLocalStorage } from "./useLocalStorage";
+import NoteList from "./NoteList";
 
 export type Tag = {
   id: string;
@@ -67,7 +68,10 @@ function App() {
         {" "}
         {/* margin on the top and buttom */}
         <Routes>
-          <Route path="/" element={<h1>Home</h1>} />
+          <Route
+            path="/"
+            element={<NoteList availableTags={tags} notes={notesWithTaggs} />}
+          />
           <Route
             path="/new"
             element={
