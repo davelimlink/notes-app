@@ -4,14 +4,21 @@ import { Link, useNavigate } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { NoteData, Tag } from "./App";
 
-interface NoteFormProps {
+type NoteFormProps = {
   onSubmit: (data: NoteData) => void;
   onAddTag: (tag: Tag) => void;
   availableTags: Tag[];
-}
+} & Partial<NoteData>;
 
-function NoteForm({ onSubmit, onAddTag, availableTags }: NoteFormProps) {
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+function NoteForm({
+  onSubmit,
+  onAddTag,
+  availableTags,
+  title = "",
+  markDown = "",
+  tags = [],
+}: NoteFormProps) {
+  const [selectedTags, setSelectedTags] = useState<Tag[]>(tags);
   const navigate = useNavigate();
 
   const titleRef = useRef<HTMLInputElement>(null);
@@ -38,6 +45,7 @@ function NoteForm({ onSubmit, onAddTag, availableTags }: NoteFormProps) {
                 <Form.Label>Title</Form.Label>
                 <Form.Control
                   ref={titleRef}
+                  defaultValue={title}
                   placeholder="Enter title"
                   required
                 />
@@ -72,7 +80,13 @@ function NoteForm({ onSubmit, onAddTag, availableTags }: NoteFormProps) {
           </Row>
           <Form.Group controlId="markdown">
             <Form.Label>Body</Form.Label>
-            <Form.Control ref={markDownRef} as="textarea" rows={15} required />
+            <Form.Control
+              defaultValue={markDown}
+              ref={markDownRef}
+              as="textarea"
+              rows={15}
+              required
+            />
           </Form.Group>
           <Stack direction="horizontal" gap={2} className="justify-content-end">
             <Button type="submit" variant="primary">

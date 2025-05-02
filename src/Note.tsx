@@ -2,6 +2,7 @@ import React from "react";
 import { useNote } from "./NoteLayout";
 import { Link, Navigate } from "react-router-dom";
 import { Badge, Button, Col, Row, Stack } from "react-bootstrap";
+import ReactMarkdown from "react-markdown";
 
 function Note() {
   const note = useNote();
@@ -38,6 +39,7 @@ function Note() {
           </Stack>
         </Col>
       </Row>
+      <ReactMarkdown>{note.markDown}</ReactMarkdown>
     </>
   );
 }
