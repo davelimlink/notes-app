@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Button, Col, Container } from "react-bootstrap"; // Assuming Container is from react-bootstrap
+import { Container } from "react-bootstrap"; // Assuming Container is from react-bootstrap
 import NewNote from "./NewNote";
 import { useLocalStorage } from "./useLocalStorage";
 import NoteList from "./NoteList";
@@ -120,6 +120,7 @@ function App() {
                 notes={notesWithTaggs}
                 updateTag={updateTag}
                 deleteTag={deleteTag}
+                setNotes={() => setNotes([])} // Clear notes function
               />
             }
           />
@@ -150,14 +151,7 @@ function App() {
           {/* if you type wrong path you will directed to home "/" */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-        <Col className="mt-4">
-          {notes.length > 0 && (
-            <Button variant="outline-danger" onClick={() => setNotes([])}>
-              Clear Notes
-            </Button>
-          )}
-        </Col>
-      </Container>{" "}
+      </Container>
     </>
   );
 }

@@ -5,10 +5,12 @@ import { Link } from "react-router-dom";
 import ReactSelect from "react-select";
 import { Note, Tag } from "./App";
 import styles from "./NoteList.module.css";
+import ClearButton from "./ClearButton";
 
 type NoteListProp = {
   availableTags: Tag[];
   notes: Note[];
+  setNotes: () => void;
   updateTag: (id: string, label: string) => void;
   deleteTag: (id: string) => void;
 };
@@ -32,6 +34,7 @@ function NoteList({
   notes,
   updateTag,
   deleteTag,
+  setNotes,
 }: NoteListProp) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState("");
@@ -124,6 +127,7 @@ function NoteList({
           setEditTagsModalOpen(false);
         }}
       />
+      <ClearButton notes={notes} setNotes={setNotes} />
     </>
   );
 }
