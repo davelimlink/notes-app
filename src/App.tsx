@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Button, Col, Container } from "react-bootstrap"; // Assuming Container is from react-bootstrap
 import NewNote from "./NewNote";
