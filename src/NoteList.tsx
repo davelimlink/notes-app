@@ -56,7 +56,7 @@ function NoteList({ availableTags, notes }: NoteListProp) {
               <Form.Control
                 onChange={(e) => setTitle(e.target.value)}
                 type="text"
-                placeholder="Enter title"
+                placeholder="Search title"
                 value={title}
               />
             </Form.Group>
@@ -84,10 +84,10 @@ function NoteList({ availableTags, notes }: NoteListProp) {
           </Col>
         </Row>
       </Form>
-      <Row xs={1} sm={2} lg={4} xl={5} className="gap-3 ">
+      <Row xs={1} sm={1} md={3} lg={4} xl={5} xxl={6} className="gap-3 ">
         {filteredNotes.map((note) => {
           return (
-            <Col key={note.id}>
+            <Col className="flex-grow-1" key={note.id}>
               <NoteCard id={note.id} title={note.title} tags={note.tags} />
             </Col>
           );

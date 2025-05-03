@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Container } from "react-bootstrap"; // Assuming Container is from react-bootstrap
+import { Button, Col, Container } from "react-bootstrap"; // Assuming Container is from react-bootstrap
 import NewNote from "./NewNote";
 import { useLocalStorage } from "./useLocalStorage";
 import NoteList from "./NoteList";
@@ -78,6 +78,12 @@ function App() {
     });
   }
 
+  function onDeleteNote(id: string) {
+    setNotes((prevNotes) => {
+      return prevNotes.filter((note) => note.id !== id);
+    });
+  }
+
   function addTag(tag: Tag) {
     setTags((prevTags) => [...prevTags, tag]);
   }
@@ -103,7 +109,7 @@ function App() {
             }
           />
           <Route path="/:id" element={<NoteLayout notes={notesWithTaggs} />}>
-            <Route index element={<Note />} />
+            <Route index element={<Note onDelete={onDeleteNote} />} />
             <Route
               path="edit"
               element={
@@ -119,7 +125,14 @@ function App() {
           {/* if you type wrong path you will directed to home "/" */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-      </Container>
+        <Col className="mt-4">
+          {notes.length > 0 && (
+            <Button variant="outline-danger" onClick={() => setNotes([])}>
+              Clear Notes
+            </Button>
+          )}
+        </Col>
+      </Container>{" "}
     </>
   );
 }

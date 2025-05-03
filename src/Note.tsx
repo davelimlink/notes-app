@@ -1,14 +1,17 @@
 import React from "react";
 import { useNote } from "./NoteLayout";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Badge, Button, Col, Row, Stack } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 
-function Note() {
+type NoteProps = {
+  onDelete: (id: string) => void;
+};
+
+function Note({ onDelete }: NoteProps) {
   const note = useNote();
-  if (!note) {
-    return <Navigate to="/" replace />;
-  }
+  const Navigate = useNavigate();
+
   return (
     <>
       <Row className="align-items-center mb-5">
@@ -32,7 +35,15 @@ function Note() {
             <Link to={`/${note.id}/edit`} className="ms-auto">
               <Button variant="primary">Edit</Button>
             </Link>
-            <Button variant="outline-danger">Delete</Button>
+            <Button
+              onClick={() => {
+                onDelete(note.id);
+                Navigate("/");
+              }}
+              variant="outline-danger"
+            >
+              Delete
+            </Button>
             <Link to="..">
               <Button variant="outline-secondary">Back</Button>
             </Link>
