@@ -78,7 +78,7 @@ function NoteList({
               <Form.Control
                 onChange={(e) => setTitle(e.target.value)}
                 type="text"
-                placeholder="Search title"
+                placeholder="Search Titles"
                 value={title}
               />
             </Form.Group>
