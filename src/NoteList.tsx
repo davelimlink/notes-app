@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Badge, Button, Card, Col, Row, Stack } from "react-bootstrap";
+import { Badge, Button, Card, Col, Modal, Row, Stack } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ReactSelect from "react-select";
@@ -9,6 +9,8 @@ import styles from "./NoteList.module.css";
 type NoteListProp = {
   availableTags: Tag[];
   notes: Note[];
+  updateTag: (id: string, label: string) => void;
+  deleteTag: (id: string) => void;
 };
 
 type SimflifiedNote = {
@@ -17,9 +19,23 @@ type SimflifiedNote = {
   tags: Tag[];
 };
 
-function NoteList({ availableTags, notes }: NoteListProp) {
+type EdditTagsModalProps = {
+  availableTags: Tag[];
+  handleClose: () => void;
+  show: boolean;
+  updateTag: (id: string, label: string) => void;
+  deleteTag: (id: string) => void;
+};
+
+function NoteList({
+  availableTags,
+  notes,
+  updateTag,
+  deleteTag,
+}: NoteListProp) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState("");
+  const [editRagsModalOpen, setEditTagsModalOpen] = useState(false);
 
   const filteredNotes = useMemo(() => {
     return notes.filter((note) => {
@@ -33,6 +49,7 @@ function NoteList({ availableTags, notes }: NoteListProp) {
       );
     });
   }, [notes, selectedTags, title]);
+
   return (
     <>
       <Row className="align-items-center mb-5">
@@ -44,7 +61,12 @@ function NoteList({ availableTags, notes }: NoteListProp) {
             <Link to={"/new"}>
               <Button variant="primary">Create</Button>
             </Link>
-            <Button variant="outline-secondary">Edit tags</Button>
+            <Button
+              onClick={() => setEditTagsModalOpen(true)}
+              variant="outline-secondary"
+            >
+              Edit tags
+            </Button>
           </Stack>
         </Col>
       </Row>
@@ -93,6 +115,15 @@ function NoteList({ availableTags, notes }: NoteListProp) {
           );
         })}
       </Row>
+      <EditTagsModal
+        availableTags={availableTags}
+        updateTag={updateTag}
+        deleteTag={deleteTag}
+        show={editRagsModalOpen}
+        handleClose={() => {
+          setEditTagsModalOpen(false);
+        }}
+      />
     </>
   );
 }
@@ -133,6 +164,51 @@ function NoteCard({ id, title, tags }: SimflifiedNote) {
         </Card.Body>
       </Card>
     </>
+  );
+}
+
+function EditTagsModal({
+  availableTags,
+  handleClose,
+  show,
+  updateTag,
+  deleteTag,
+}: EdditTagsModalProps) {
+  return (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Edit Tags</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Stack gap={2}>
+            {availableTags.map((tag) => {
+              return (
+                <Row key={tag.id} className="align-items-center">
+                  <Col>
+                    <Form.Group controlId={tag.id}>
+                      <Form.Control
+                        type="text"
+                        value={tag.label}
+                        onChange={(e) => updateTag(tag.id, e.target.value)}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col xs="auto">
+                    <Button
+                      onClick={() => deleteTag(tag.id)}
+                      variant="outline-danger"
+                    >
+                      &times;
+                    </Button>
+                  </Col>
+                </Row>
+              );
+            })}
+          </Stack>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 }
 
